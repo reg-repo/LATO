@@ -1,10 +1,7 @@
 cff-version: 1.0.0
-message: "If you use any code or data in this repository, please cite it as below."
 authors:
 - family-names: "Huang"
   given-names: "Yike"
   orcid: "https://orcid.org/0009-0004-5166-1113"
 title: "LATO Repository"
-version: 1.0.0
-date-released: 2025-03-09
 url: "https://github.com/reg-repo/LATO"
