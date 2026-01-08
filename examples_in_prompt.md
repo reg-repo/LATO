@@ -4,10 +4,10 @@
 ### Key Activity Identification
 ```
 Input:
-The device at startup should first perform SIM card authentication, verifying the validity and legality of the SIM card. If the SIM card is invalid or unrecognized, prompt the user and block further operations. After authentication succeeds, the device should initiate a multi-factor authentication process (e.g., password, fingerprint, facial recognition), requiring at least two methods to pass according to the user’s configured security level. Each authentication step should include timeout and error-handling mechanisms; if multiple failures occur (e.g., more than three attempts), the device should lock the user account and issue a warning notification. Upon successful authentication, the device should record detailed information about the authentication event—including time, authentication method, and result—for later security review and log analysis. The device should periodically re-verify the user’s identity, especially when abnormal behavior is detected or after extended inactivity, to ensure continuous security.
+The device at startup should first perform user account authentication, verifying the validity and legality of the user account. If the user account is invalid or unrecognized, prompt the user and block further operations. After authentication succeeds, the device should initiate a multi-factor authentication process (e.g., password, fingerprint, facial recognition), requiring at least two methods to pass according to the user’s configured security level. Each authentication step should include timeout and error-handling mechanisms; if multiple failures occur (e.g., more than three attempts), the device should lock the user account and issue a warning notification. Upon successful authentication, the device should record detailed information about the authentication event—including time, authentication method, and result—for later security review and log analysis. The device should periodically re-verify the user’s identity, especially when abnormal behavior is detected or after extended inactivity, to ensure continuous security.
 
 Output:
-[SIM card authentication, prompt user, abort operation, initiate multi-factor authentication, password authentication, fingerprint authentication, facial recognition, record passed methods, timeout and error handling, lock user account, issue warning notification, record authentication event details, periodic re-authentication]
+[user account authentication, prompt user, abort operation, initiate multi-factor authentication, password authentication, fingerprint authentication, facial recognition, record passed methods, timeout and error handling, lock user account, issue warning notification, record authentication event details, periodic re-authentication]
 
 Input:
 When a user attempts to enter the system, they must first swipe their card for identity verification. If the card is invalid, the system will deny access and terminate the process; if the card is valid, the system will turn on the lights and start the air conditioning (AC), then execute the subsequent steps in parallel. Based on current temperature conditions, the system will adjust as follows: if it is hot, close the blinds and set the AC to high fan speed; if normal, set the AC to medium fan speed; if cloudy, turn off the AC and open the blinds. While monitoring temperature, the system also activates the environmental sensor for real-time monitoring of smoke. If smoke is detected, the system performs these parallel operations: open the door for rapid evacuation and generate an alarm to alert the user. If no smoke is detected, the system enters sleep mode.
@@ -18,13 +18,13 @@ Output:
 ### Layerwise Relation Extraction
 ```
 Input:
-The device at startup should first perform SIM card authentication, verifying the validity and legality of the SIM card. If the SIM card is invalid or unrecognized, prompt the user and block further operations. After authentication succeeds, the device should initiate a multi-factor authentication process (e.g., password, fingerprint, facial recognition), requiring at least two methods to pass according to the user’s configured security level. Each authentication step should include timeout and error-handling mechanisms; if multiple failures occur (e.g., more than three attempts), the device should lock the user account and issue a warning notification. Upon successful authentication, the device should record detailed information about the authentication event—including time, authentication method, and result—for later security review and log analysis. The device should periodically re-verify the user’s identity, especially when abnormal behavior is detected or after extended inactivity, to ensure continuous security.
+The device at startup should first perform user account authentication, verifying the validity and legality of the user account. If the user account is invalid or unrecognized, prompt the user and block further operations. After authentication succeeds, the device should initiate a multi-factor authentication process (e.g., password, fingerprint, facial recognition), requiring at least two methods to pass according to the user’s configured security level. Each authentication step should include timeout and error-handling mechanisms; if multiple failures occur (e.g., more than three attempts), the device should lock the user account and issue a warning notification. Upon successful authentication, the device should record detailed information about the authentication event—including time, authentication method, and result—for later security review and log analysis. The device should periodically re-verify the user’s identity, especially when abnormal behavior is detected or after extended inactivity, to ensure continuous security.
 
 Final Output:
 Level 1{
-**SIM card authentication** triggers a conditional structure with 2 branches:
-  Branch **SIM card invalid or unrecognized**: prompt user -> abort operation -> end
-  Branch **SIM card authentication successful**: initiate multi-factor authentication -> [**initiate multi-factor authentication** triggers loop structure] -> authentication success -> record detailed authentication event information -> periodic re-authentication}
+**user account authentication** triggers a conditional structure with 2 branches:
+  Branch **user account invalid or unrecognized**: prompt user -> abort operation -> end
+  Branch **user account authentication successful**: initiate multi-factor authentication -> [**initiate multi-factor authentication** triggers loop structure] -> authentication success -> record detailed authentication event information -> periodic re-authentication}
 Level 2{
 **Initiate multi-factor authentication** triggers a loop structure with the loop condition **number of passed authentication methods < 2**:
   [**number of passed authentication methods** triggers parallel structure] -> [**number of authentication failures** triggers conditional structure]}
@@ -75,16 +75,16 @@ Level 4{
 ### Behaviroal Model Constructor
 ```
 Input:
-The device, upon startup, should first perform SIM card authentication, verifying the validity and legitimacy of the SIM card. If the SIM card is invalid or unrecognized, it should prompt the user and abort any further operations. Once authentication succeeds, the device should initiate a multi-factor authentication process (e.g., password, fingerprint, facial recognition), requiring at least two authentication methods to pass based on the user’s configured security level. Each authentication step should include timeout and error-handling mechanisms; if authentication fails multiple times (e.g., more than 3 times), the device should lock the user account and send a warning notification. After successful authentication, the device should log detailed information about the authentication event, including the time, methods used, and result, for subsequent security review and log analysis. The device should periodically re-verify the user’s identity, especially when abnormal behavior is detected or after long periods of inactivity, to ensure continuous security.
+The device, upon startup, should first perform user account authentication, verifying the validity and legitimacy of the user account. If the user account is invalid or unrecognized, it should prompt the user and abort any further operations. Once authentication succeeds, the device should initiate a multi-factor authentication process (e.g., password, fingerprint, facial recognition), requiring at least two authentication methods to pass based on the user’s configured security level. Each authentication step should include timeout and error-handling mechanisms; if authentication fails multiple times (e.g., more than 3 times), the device should lock the user account and send a warning notification. After successful authentication, the device should log detailed information about the authentication event, including the time, methods used, and result, for subsequent security review and log analysis. The device should periodically re-verify the user’s identity, especially when abnormal behavior is detected or after long periods of inactivity, to ensure continuous security.
 
 #Activity Identification
-SIM card authentication, prompt user, abort operation, initiate multi-factor authentication, password recognition, fingerprint recognition, facial recognition, record successful authentication method, timeout and error handling, lock user account, send warning notification, authentication successful, log authentication event details, periodic re-authentication
+user account authentication, prompt user, abort operation, initiate multi-factor authentication, password recognition, fingerprint recognition, facial recognition, record successful authentication method, timeout and error handling, lock user account, send warning notification, authentication successful, log authentication event details, periodic re-authentication
 
 #Relation Decomposition
 Level 1{
-**SIM card authentication** triggers a conditional structure, with 2 branches:
-  Branch **SIM card invalid or unrecognized**: prompt user -> abort operation -> end
-  Branch **SIM card authenticated successfully**: initiate multi-factor authentication -> [**initiate multi-factor authentication** triggers a loop structure] -> authentication successful -> log authentication event details -> periodic re-authentication}
+**user account authentication** triggers a conditional structure, with 2 branches:
+  Branch **user account invalid or unrecognized**: prompt user -> abort operation -> end
+  Branch **user account authenticated successfully**: initiate multi-factor authentication -> [**initiate multi-factor authentication** triggers a loop structure] -> authentication successful -> log authentication event details -> periodic re-authentication}
 Level 2{
 **Initiate multi-factor authentication** triggers a loop structure, looping while **number of passed authentication methods < 2**:
   [**number of passed authentication methods** triggers a parallel structure] -> [**authentication failure count** triggers a conditional structure]}
@@ -109,8 +109,8 @@ Level 4{
 Please understand the decomposition above and write a Information Integration, ensuring necessary descriptive details remain consistent with the input text.
 
 Output:
-SIM card authentication
-if SIM card invalid/unrecognized
+user account authentication
+if user account invalid/unrecognized
     prompt user
     abort operation
 else
@@ -209,11 +209,11 @@ else
 ```
 ```
 Input:
-On device startup, the device should first perform SIM card authentication to verify the SIM card’s validity and legitimacy. If the SIM card is invalid or unrecognized, prompt the user and block further operations. After successful authentication, the device should initiate a multi-factor authentication flow (e.g., password, fingerprint, facial recognition), requiring at least two authentication methods to pass based on the user’s configured security level. Each authentication step should include timeout and error-handling mechanisms. If multiple authentication failures occur (e.g., more than 3 times), the device should lock the user’s account and issue a warning notification. Upon successful authentication, the device should log detailed information about the authentication event, including timestamp, authentication methods, and results for subsequent security review and log analysis. The device should periodically re-verify the user’s identity, especially when detecting anomalous behavior or prolonged inactivity, to ensure continuous security.
+On device startup, the device should first perform user account authentication to verify the user account’s validity and legitimacy. If the user account is invalid or unrecognized, prompt the user and block further operations. After successful authentication, the device should initiate a multi-factor authentication flow (e.g., password, fingerprint, facial recognition), requiring at least two authentication methods to pass based on the user’s configured security level. Each authentication step should include timeout and error-handling mechanisms. If multiple authentication failures occur (e.g., more than 3 times), the device should lock the user’s account and issue a warning notification. Upon successful authentication, the device should log detailed information about the authentication event, including timestamp, authentication methods, and results for subsequent security review and log analysis. The device should periodically re-verify the user’s identity, especially when detecting anomalous behavior or prolonged inactivity, to ensure continuous security.
 
 #Information Integration
-SIM card authentication
-if SIM card invalid/unrecognized
+user account authentication
+if user account invalid/unrecognized
     prompt user
     abort operation
 else
@@ -250,8 +250,8 @@ else
 
 Output:
 start
-  :Perform SIM card authentication;
-  if (Is SIM card valid?) then (yes)
+  :Perform user account authentication;
+  if (Is user account valid?) then (yes)
      :Initiate multi-factor authentication;
      :Select authentication methods;
      repeat
@@ -288,7 +288,7 @@ start
      :Authentication successful;
      :Log authentication event;
   else (no)
-     :Notify invalid SIM card;
+     :Notify invalid user account;
      stop
   endif
   :Periodically re-verify;
@@ -379,14 +379,14 @@ Output:
 ## Few-shot
 ```
 Input:
-When the device powers on, it should first perform SIM card authentication to verify the SIM card’s validity and legitimacy. If the SIM card is invalid or unrecognized, prompt the user and block further operations. After authentication succeeds, the device should initiate a multi-factor authentication flow (such as password, fingerprint, facial recognition), requiring at least two authentication methods to pass according to the user’s configured security level. Each authentication step should include timeout and error-handling mechanisms; if multiple authentication failures occur (e.g., more than 3 times), the device should lock the user’s account and issue a warning notification. Upon successful authentication, the device should log detailed information about the authentication event—including timestamp, authentication method, and result—for subsequent security review and log analysis. The device should periodically re-verify the user’s identity, especially when detecting anomalous behavior or prolonged inactivity, to ensure continuous security.
+When the device powers on, it should first perform user account authentication to verify the user account’s validity and legitimacy. If the user account is invalid or unrecognized, prompt the user and block further operations. After authentication succeeds, the device should initiate a multi-factor authentication flow (such as password, fingerprint, facial recognition), requiring at least two authentication methods to pass according to the user’s configured security level. Each authentication step should include timeout and error-handling mechanisms; if multiple authentication failures occur (e.g., more than 3 times), the device should lock the user’s account and issue a warning notification. Upon successful authentication, the device should log detailed information about the authentication event—including timestamp, authentication method, and result—for subsequent security review and log analysis. The device should periodically re-verify the user’s identity, especially when detecting anomalous behavior or prolonged inactivity, to ensure continuous security.
 
 Please generate the PlantUML code for the activity diagram based on the above requirements. Output the result directly without explanation.
 
 Output:
 start
-  :Perform SIM card authentication;
-  if (SIM card valid?) then (yes)
+  :Perform user account authentication;
+  if (user account valid?) then (yes)
      :Initiate multi-factor authentication;
      :Select authentication methods;
 	 repeat
@@ -423,7 +423,7 @@ start
 	 :Authentication successful;
 	 :Log authentication event;
 	else (no)
-	 :Prompt invalid SIM card;
+	 :Prompt invalid user account;
 	 stop
 	endif
 	:Periodically re-verify;
@@ -475,13 +475,13 @@ else (no)
 ## Chain-of-Thought
 ```
 Input:
-The device should first perform SIM card authentication at startup, verifying the validity and legitimacy of the SIM card. If the SIM card is invalid or unrecognized, prompt the user and prevent further operation. After authentication passes, the device should initiate a multi-factor authentication process (e.g., password, fingerprint, facial recognition), requiring at least two authentication methods to pass based on the user-defined security level. Each authentication step should include timeout and error handling mechanisms; if multiple authentication failures occur (e.g., more than 3 times), the device should lock the user account and issue a warning notification. Upon successful authentication, the device should record detailed information of the authentication event, including time, method, and result, for subsequent security review and log analysis. The device should periodically re-verify the user's identity, especially when detecting abnormal behavior or prolonged inactivity, to ensure continuous security.
+The device should first perform user account authentication at startup, verifying the validity and legitimacy of the user account. If the user account is invalid or unrecognized, prompt the user and prevent further operation. After authentication passes, the device should initiate a multi-factor authentication process (e.g., password, fingerprint, facial recognition), requiring at least two authentication methods to pass based on the user-defined security level. Each authentication step should include timeout and error handling mechanisms; if multiple authentication failures occur (e.g., more than 3 times), the device should lock the user account and issue a warning notification. Upon successful authentication, the device should record detailed information of the authentication event, including time, method, and result, for subsequent security review and log analysis. The device should periodically re-verify the user's identity, especially when detecting abnormal behavior or prolonged inactivity, to ensure continuous security.
 
 Please generate PlantUML code for the activity diagram according to the above requirements.
 
 Steps:
 1. Identify the main activities in the process flow:
-   - SIM card authentication
+   - user account authentication
    - Multi-factor authentication selection
    - Password authentication
    - Fingerprint scanning
@@ -491,14 +491,14 @@ Steps:
    - Account locking
    - Periodic re-verification
 2. Determine the logical sequence and dependencies between activities:
-   - SIM card validity check precedes multi-factor authentication
+   - user account validity check precedes multi-factor authentication
    - Multi-factor authentication branches into three parallel methods
    - Authentication methods have independent success/failure paths
    - Failure count tracking affects retry logic
    - Success requires at least two methods to pass
    - Periodic re-verification follows successful authentication
 3. Identify decision points and conditional flows:
-   - SIM card validity check (valid/invalid)
+   - user account validity check (valid/invalid)
    - Authentication method selection (password/fingerprint/face)
    - Authentication result for each method (success/failure)
    - Failure count threshold (≤3/>3)
@@ -519,8 +519,8 @@ Steps:
 
 Output:
 start
-  :Perform SIM card authentication;
-  if (SIM card valid?) then (yes)
+  :Perform user account authentication;
+  if (user account valid?) then (yes)
      :Start multi-factor authentication;
      :Choose authentication method;
      repeat
@@ -557,7 +557,7 @@ start
      :Authentication successful;
      :Log authentication event;
   else (no)
-     :Prompt “Invalid SIM card”;
+     :Prompt “Invalid user account”;
      stop
   endif
   :Periodic re-verification;
