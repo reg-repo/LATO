@@ -1,6 +1,6 @@
 # Examples Used in Prompting Methods
 
-## AutoBM
+## LATO
 ### Key Activity Identification
 ```
 Input:
