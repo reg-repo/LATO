@@ -66,13 +66,13 @@ print(result)
 ## Approach
 <div align="center">
   <img src="figures/overview.png" alt="Overview" />
-  <p><em>Figure 2. Overview</em></p>
+  <p><em>Figure 1. Overview</em></p>
 </div>
 
 ## Example Generated Result
 <div align="center">
   <img src="figures/result.png" width="75%" alt="" />
-  <p><em>Figure 3. Generated Result by LATO</em></p>
+  <p><em>Figure 32 Generated Result by LATO</em></p>
 </div>
 
 Also, you can find detailed prompt examples we crafted in [Examples Used in Prompting](./examples_in_prompt.md)
