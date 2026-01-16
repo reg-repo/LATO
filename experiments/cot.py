@@ -14,11 +14,18 @@ prompt = ChatPromptTemplate.from_messages(
 
 
 class CoT:
-    def __init__(self, llm):
+    def __init__(self, llm, prompt_path='prompt/cot.txt'):
         self.llm = llm
         self.chain = prompt | self.llm
-        with open('prompt/cot.txt', 'r', encoding='utf-8') as file:
-            self.examples = file.read()
+        # Default fallback or user provided path
+        try:
+            with open(prompt_path, 'r', encoding='utf-8') as file:
+                self.examples = file.read()
+        except FileNotFoundError:
+             # If running from repo root, try different path or leave empty
+             # This assumes prompt files are managed externally for these experiments
+             print(f"Warning: Prompt file not found at {prompt_path}")
+             self.examples = ""
 
     def invoke(self, data):
         response = self.chain.invoke(

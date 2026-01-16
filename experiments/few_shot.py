@@ -16,11 +16,15 @@ prompt = ChatPromptTemplate.from_messages(
 
 
 class FewShot:
-    def __init__(self, llm):
+    def __init__(self, llm, prompt_path='prompt/few.txt'):
         self.llm = llm
         self.chain = prompt | self.llm
-        with open('prompt/few.txt', 'r', encoding='utf-8') as file:
-            self.examples = file.read()
+        try:
+            with open(prompt_path, 'r', encoding='utf-8') as file:
+                self.examples = file.read()
+        except FileNotFoundError:
+             print(f"Warning: Prompt file not found at {prompt_path}")
+             self.examples = ""
 
     def invoke(self, data):
         response = self.chain.invoke(

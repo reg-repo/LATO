@@ -2,27 +2,33 @@ import os
 import re
 import subprocess
 
-from langchain.prompts import (
-    ChatPromptTemplate,
-    HumanMessagePromptTemplate,
-    SystemMessagePromptTemplate,
-)
-
-
-def validate_uml_with_syntax_check(uml_code):
-    jar_path = os.path.join(
-        os.path.dirname(__file__),
-        'util', 'plantuml', 'plantuml.jar'
-    )
+def validate_uml_with_syntax_check(uml_code, config=None):
+    jar_path = None
+    if config:
+        jar_path = config.get_plantuml_path()
+    
+    if not jar_path:
+        jar_path = os.path.join(
+            os.path.dirname(__file__),
+            '..', 'utils', 'plantuml', 'plantuml.jar'
+        )
+        
     cmd = ['java', '-jar', jar_path, '-syntax']
-    proc = subprocess.Popen(
-        cmd,
-        stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True
-    )
-    out, err = proc.communicate(uml_code)
+    
+    # Check if java is installed
+    try:
+        proc = subprocess.Popen(
+            cmd,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        out, err = proc.communicate(uml_code)
+    except FileNotFoundError:
+        return False, ["Java executable not found. Please install Java."]
+    except Exception as e:
+        return False, [f"Error running PlantUML: {e}"]
 
     errors = []
 
@@ -69,53 +75,15 @@ def extract_uml_content(text: str) -> str:
         return text[content_start:end_index].strip()
 
 
-generatePrompt = ChatPromptTemplate.from_messages(
-    messages=[
-        SystemMessagePromptTemplate.from_template(
-            "You are a PlantUML expert. Given a set of requirements and a format‐reconstruction,"
-            "you will produce valid PlantUML activity‐diagram code only."
-        ),
-        HumanMessagePromptTemplate.from_template(
-            "{Examples}\n\nInput:\n{Input}\n\n"
-            """
-            TASK:
-            1. Review the above requirements and its related structured format.
-            2. Correct any inconsistencies silently.
-            3. Generate the PlantUML code for the activity diagram.
-            4. Output _only_ the PlantUML code — no commentary, no explanation, no extra text.
-            """
-            "\n\n"
-            "Output:"
-        )
-    ]
-)
-
-regenerate_prompt = ChatPromptTemplate.from_messages([
-    SystemMessagePromptTemplate.from_template(
-        "You are a PlantUML expert. Fix the following errors in the PlantUML code."
-    ),
-    HumanMessagePromptTemplate.from_template(
-        "{Examples}\n\nInput:\n{Input}\n\n"
-        """
-        Original TASK:
-        1. Review the above requirements and its related structured format.
-        2. Correct any inconsistencies silently.
-        3. Generate the PlantUML code for the activity diagram.
-        4. Output _only_ the PlantUML code — no commentary, no explanation, no extra text.
-        """
-        "\n\n"
-        "Former Output:"
-        "{uml_code}\n\n"
-        "Errors found during validation:\n"
-        "{errors}\n\n"
-        "Please correct the code and output ONLY the repaired PlantUML code."
-    )
-])
-
-
 class GenerateModule:
-    def __init__(self, llm):
+    def __init__(self, llm, prompt_manager, config=None):
         self.llm = llm
+        self.prompt_manager = prompt_manager
+        self.config = config
+        
+        generatePrompt = self.prompt_manager.load_prompt("generate")
+        regenerate_prompt = self.prompt_manager.load_prompt("regenerate")
+        
         self.generate_chain = generatePrompt | llm
         self.retry_chain = regenerate_prompt | llm
 
@@ -135,7 +103,7 @@ class GenerateModule:
             current_uml = extract_uml_content(current_uml)
             if count >= 5:
                 return current_uml
-            flag, errors = validate_uml_with_syntax_check(current_uml)
+            flag, errors = validate_uml_with_syntax_check(current_uml, self.config)
 
             if flag:
                 return current_uml
